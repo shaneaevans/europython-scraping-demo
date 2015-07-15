@@ -1,0 +1,6 @@
+requests
+scrapy
+lxml
+twisted==13.*
+six
+cryptography
