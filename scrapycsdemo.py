@@ -14,6 +14,7 @@ class EPSpeakerSpider(CrawlSpider):
         item = {}
         item['url'] = response.url
         item['name'] = response.xpath('//section[@class="profile-name"]//h1/text()').extract()[0].strip()
+        item['avatar'] = response.urljoin(response.xpath('//img[@class="avatar"]/@src').extract()[0])
 
         # Getting all attributes about the Speaker
         for field in response.xpath('//dl[@class="dl-horizontal"]//dt'):
