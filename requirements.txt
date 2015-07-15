@@ -4,3 +4,4 @@ lxml
 twisted==13.*
 six
 cryptography
+BeautifulSoup
