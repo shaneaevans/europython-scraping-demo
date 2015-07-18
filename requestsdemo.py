@@ -13,8 +13,7 @@ class BSCrawler(object):
 
     def start_crawl(self):
         # Speakers url is https://ep2015.europython.eu/en/speakers/
-        response = self.make_request('/en/speakers/')
-
+        response = self.make_request(self.base_url + '/en/speakers/')
         if response:
             # Let's parse the received html
             soup = BeautifulSoup(response.content)
@@ -32,7 +31,8 @@ class BSCrawler(object):
         # Exception handling
         try:
             # Doing synchronous request, blocking every time we do a new request.
-            return self.session.get(self.base_url + url)
+
+            return self.session.get(url)
         except (requests.exceptions.HTTPError, requests.exceptions.ConnectTimeout,
                 requests.exceptions.ConnectionError) as e:
             if retried < self.max_retries:
@@ -56,7 +56,7 @@ class BSCrawler(object):
         item['url'] = url
         item['talks'] = []
         for talk in soup.find('div', attrs={'class': 'speaker-talks well'}).dl.dd.ul.li:
-            item['talks'].append({'name': talk.text, 'url': BASE_URL + talk['href']})
+            item['talks'].append({'name': talk.text, 'url': self.base_url + talk['href']})
         for dl in soup.findAll('dl', attrs={'class': 'dl-horizontal'}):
             for dt in dl.findChildren('dt'):
                 name = dt.text
